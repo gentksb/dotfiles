@@ -168,3 +168,5 @@ if [ -n "$WSL_DISTRO_NAME" ]; then
     export BROWSER="wslview"
     export DISPLAY=:0
 fi
+
+alias claude="/home/gen/.claude/local/claude"
