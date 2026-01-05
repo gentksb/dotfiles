@@ -12,3 +12,10 @@
 !.gitignore
 !/.bashrc
 !/install.sh
+!/.claude/
+!/.claude/CLAUDE.md
+!/.claude/settings.json
+!/.claude/skills/
+!/.claude/skills/**
+!/.claude/commands/
+!/.claude/commands/**
