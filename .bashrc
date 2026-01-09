@@ -8,6 +8,13 @@ case $- in
       *) return;;
 esac
 
+# Detect OS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  IS_MACOS=1
+else
+  IS_MACOS=0
+fi
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -28,7 +35,9 @@ shopt -s checkwinsize
 #shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+if [ "$IS_MACOS" -eq 0 ]; then
+  [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+fi
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -73,15 +82,18 @@ xterm*|rxvt*)
 esac
 
 # enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+# On macOS, use default color scheme (no dircolors)
+if [ "$IS_MACOS" -eq 0 ]; then
+  if [ -x /usr/bin/dircolors ]; then
+      test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+      alias ls='ls --color=auto'
+      #alias dir='dir --color=auto'
+      #alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+      alias grep='grep --color=auto'
+      alias fgrep='fgrep --color=auto'
+      alias egrep='egrep --color=auto'
+  fi
 fi
 
 # colored GCC warnings and errors
@@ -116,8 +128,10 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# disable lock
-stty stop undef
+# disable lock (Linux only)
+if [ "$IS_MACOS" -eq 0 ]; then
+  stty stop undef
+fi
 
 # direnv
 eval "$(direnv hook bash)"
@@ -151,8 +165,26 @@ __bash_prompt() {
 }
 __bash_prompt
 
+# Homebrew (macOS)
+if [ "$IS_MACOS" -eq 1 ]; then
+  # Apple Silicon
+  if [ -f "/opt/homebrew/bin/brew" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  # Intel Mac
+  elif [ -f "/usr/local/bin/brew" ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
+fi
+
+# uv (Python package manager)
+if [ "$IS_MACOS" -eq 1 ]; then
+  if command -v uv &> /dev/null; then
+    eval "$(uv generate-shell-completion bash)"
+  fi
+fi
+
 # pnpm
-export PNPM_HOME="/home/gen/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -169,4 +201,4 @@ if [ -n "$WSL_DISTRO_NAME" ]; then
     export DISPLAY=:0
 fi
 
-alias claude="/home/gen/.claude/local/claude"
+alias claude="$HOME/.claude/local/claude"
