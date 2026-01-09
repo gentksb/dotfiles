@@ -25,6 +25,7 @@ Console theme by Codespaces default.
 - GitHub CLI (gh)
 - jq (JSON processor)
 - Bitwarden CLI
+- Claude Code CLI
 - uv (Python package manager)
 - GUI Applications:
   - **Productivity & Utilities**:
@@ -63,6 +64,7 @@ The installation script will:
 
 After installation:
 - Restart your terminal or run `source ~/.bash_profile`
+- Authenticate Claude Code CLI: Run `claude` and follow the OAuth authentication flow (requires Claude Pro/Max or active billing)
 - Grant necessary permissions to GUI applications (Karabiner-Elements, Rectangle)
 - Configure RayCast and other applications according to your preferences
 
@@ -103,7 +105,8 @@ Dotfiles are automatically installed when:
 ### macOS
 - Uses system default color scheme (no custom terminal colors)
 - Homebrew is installed to `/opt/homebrew` (Apple Silicon) or `/usr/local` (Intel)
-- GUI applications can be skipped in CI environments by setting `CI=true`
+- GUI applications and Claude Code CLI can be skipped in CI environments by setting `CI=true`
+- Claude Code CLI requires authentication after installation (Claude Pro/Max subscription or active billing)
 
 ### Linux/WSL
 - Uses dircolors for terminal color customization
