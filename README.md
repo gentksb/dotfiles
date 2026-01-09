@@ -27,11 +27,19 @@ Console theme by Codespaces default.
 - Bitwarden CLI
 - uv (Python package manager)
 - GUI Applications:
-  - RayCast (launcher)
-  - Ghostty (terminal emulator)
-  - OrbStack (container runtime)
-  - Rectangle (window manager)
-  - Karabiner-Elements (keyboard customizer)
+  - **Productivity & Utilities**:
+    - RayCast (launcher)
+    - Rectangle (window manager)
+    - Karabiner-Elements (keyboard customizer)
+  - **Development Tools**:
+    - Visual Studio Code (code editor)
+    - Ghostty (terminal emulator)
+    - OrbStack (container runtime)
+  - **Browsers**:
+    - Google Chrome
+  - **Communication**:
+    - Slack
+    - Discord
 
 ### Development Environment
 - **Node.js**: Managed via pnpm

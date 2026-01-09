@@ -50,11 +50,23 @@ install_macos_packages() {
   # Install GUI applications (skip in CI environment)
   if [ -z "${CI:-}" ]; then
     echo "Installing GUI applications..."
+
+    # Productivity & Utilities
     brew install --cask raycast
-    brew install --cask ghostty
-    brew install --cask orbstack
     brew install --cask rectangle
     brew install --cask karabiner-elements
+
+    # Development Tools
+    brew install --cask visual-studio-code
+    brew install --cask ghostty
+    brew install --cask orbstack
+
+    # Browsers
+    brew install --cask google-chrome
+
+    # Communication
+    brew install --cask slack
+    brew install --cask discord
   else
     echo "Skipping GUI applications in CI environment"
   fi
