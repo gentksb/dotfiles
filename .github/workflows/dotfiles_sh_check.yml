@@ -1,4 +1,4 @@
-name: UbuntuCI
+name: CI
 
 on: [push]
 
@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu:latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Install required base package
         run: |
           DEBIAN_FRONTEND=noninteractive
@@ -15,3 +15,13 @@ jobs:
           apt-get install -y sudo
       - name: Install dotfiles
         run: ./install.sh
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dotfiles
+        run: |
+          # Skip GUI applications in CI environment
+          export CI=true
+          ./install.sh

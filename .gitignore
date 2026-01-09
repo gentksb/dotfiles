@@ -11,6 +11,7 @@
 !/README.md
 !.gitignore
 !/.bashrc
+!/.bash_profile
 !/install.sh
 !/.claude/
 !/.claude/CLAUDE.md
