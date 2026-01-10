@@ -55,6 +55,7 @@ install_macos_packages() {
     brew install --cask raycast
     brew install --cask rectangle
     brew install --cask karabiner-elements
+    brew install --cask alt-tab
 
     # Development Tools
     brew install --cask visual-studio-code

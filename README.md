@@ -32,6 +32,7 @@ Console theme by Codespaces default.
     - RayCast (launcher)
     - Rectangle (window manager)
     - Karabiner-Elements (keyboard customizer)
+    - Alt-Tab (window switcher)
   - **Development Tools**:
     - Visual Studio Code (code editor)
     - Ghostty (terminal emulator)
