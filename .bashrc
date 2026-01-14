@@ -202,3 +202,6 @@ if [ -n "$WSL_DISTRO_NAME" ]; then
 fi
 
 alias claude="$HOME/.claude/local/claude"
+
+# Load local settings (not tracked in git)
+[ -f ~/.bashrc.local ] && source ~/.bashrc.local
