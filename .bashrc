@@ -82,17 +82,22 @@ xterm*|rxvt*)
 esac
 
 # enable color support of ls and also add handy aliases
-# On macOS, use default color scheme (no dircolors)
-if [ "$IS_MACOS" -eq 0 ]; then
+if [ "$IS_MACOS" -eq 1 ]; then
+  # macOS: use -G flag for colored ls output
+  export CLICOLOR=1
+  export LSCOLORS=GxFxCxDxBxegedabagaced
+  alias ls='ls -G'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+else
+  # Linux/WSL: use dircolors
   if [ -x /usr/bin/dircolors ]; then
-      test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-      alias ls='ls --color=auto'
-      #alias dir='dir --color=auto'
-      #alias vdir='vdir --color=auto'
-
-      alias grep='grep --color=auto'
-      alias fgrep='fgrep --color=auto'
-      alias egrep='egrep --color=auto'
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
   fi
 fi
 
@@ -200,8 +205,6 @@ if [ -n "$WSL_DISTRO_NAME" ]; then
     export BROWSER="wslview"
     export DISPLAY=:0
 fi
-
-alias claude="$HOME/.claude/local/claude"
 
 # Load local settings (not tracked in git)
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local

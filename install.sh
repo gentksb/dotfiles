@@ -18,6 +18,16 @@ detect_os() {
 
 OS=$(detect_os)
 
+# Change default shell to bash on macOS
+change_default_shell_to_bash() {
+  if [[ "$SHELL" != */bash ]]; then
+    echo "Changing default shell to bash..."
+    chsh -s /bin/bash
+  else
+    echo "Default shell is already bash"
+  fi
+}
+
 # Install Homebrew on macOS
 install_homebrew() {
   if ! command -v brew &> /dev/null; then
@@ -68,6 +78,9 @@ install_macos_packages() {
     # Communication
     brew install --cask slack
     brew install --cask discord
+
+    # Password Manager
+    brew install --cask bitwarden
   else
     echo "Skipping GUI applications in CI environment"
   fi
@@ -145,6 +158,7 @@ main() {
     macos)
       install_homebrew
       install_macos_packages
+      change_default_shell_to_bash
       ;;
     linux|wsl)
       install_linux_packages
