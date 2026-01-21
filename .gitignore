@@ -20,3 +20,6 @@
 !/.claude/skills/**
 !/.claude/commands/
 !/.claude/commands/**
+!/.config/
+!/.config/git/
+!/.config/git/ignore
