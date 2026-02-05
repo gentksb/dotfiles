@@ -56,21 +56,6 @@ alias l='ls -CF'
 alias restart='exec $SHELL -l'
 
 # ============================================================
-# Environment variables
-# ============================================================
-
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
-
-# ============================================================
 # Load local settings (not tracked in git)
 # Shell-specific local files are loaded in .bashrc/.zshrc
 # ============================================================
