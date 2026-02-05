@@ -18,16 +18,6 @@ detect_os() {
 
 OS=$(detect_os)
 
-# Change default shell to bash on macOS
-change_default_shell_to_bash() {
-  if [[ "$SHELL" != */bash ]]; then
-    echo "Changing default shell to bash..."
-    chsh -s /bin/bash
-  else
-    echo "Default shell is already bash"
-  fi
-}
-
 # Install Homebrew on macOS
 install_homebrew() {
   if ! command -v brew &> /dev/null; then
@@ -158,7 +148,6 @@ main() {
     macos)
       install_homebrew
       install_macos_packages
-      change_default_shell_to_bash
       ;;
     linux|wsl)
       install_linux_packages
@@ -173,7 +162,11 @@ main() {
 
   echo -e "\e[1;36m Install completed!!!! \e[m"
   echo ""
-  echo "Please restart your shell or run: source ~/.bashrc"
+  if [[ "$OS" == "macos" ]]; then
+    echo "Please restart your shell or run: source ~/.zshrc"
+  else
+    echo "Please restart your shell or run: source ~/.bashrc"
+  fi
 
   if [[ "$OS" == "macos" ]]; then
     echo ""

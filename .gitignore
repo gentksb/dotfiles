@@ -12,6 +12,9 @@
 !.gitignore
 !/.bashrc
 !/.bash_profile
+!/.zshrc
+!/.zprofile
+!/.shell_common
 !/install.sh
 !/.claude/
 !/.claude/CLAUDE.md

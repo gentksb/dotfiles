@@ -1,0 +1,62 @@
+# ~/.shell_common: Common shell configuration for bash and zsh
+
+# Detect OS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  IS_MACOS=1
+else
+  IS_MACOS=0
+fi
+
+# ============================================================
+# Homebrew (macOS) - must be loaded early for PATH setup
+# ============================================================
+if [ "$IS_MACOS" -eq 1 ]; then
+  # Apple Silicon
+  if [ -f "/opt/homebrew/bin/brew" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  # Intel Mac
+  elif [ -f "/usr/local/bin/brew" ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
+fi
+
+# ============================================================
+# Color support
+# ============================================================
+if [ "$IS_MACOS" -eq 1 ]; then
+  # macOS: use -G flag for colored ls output
+  export CLICOLOR=1
+  export LSCOLORS=GxFxCxDxBxegedabagaced
+fi
+
+# ============================================================
+# Aliases
+# ============================================================
+if [ "$IS_MACOS" -eq 1 ]; then
+  alias ls='ls -G'
+else
+  # Linux/WSL
+  if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+  fi
+fi
+
+# Common grep aliases
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# restart shell
+alias restart='exec $SHELL -l'
+
+# ============================================================
+# Load local settings (not tracked in git)
+# Shell-specific local files are loaded in .bashrc/.zshrc
+# ============================================================
+[ -f ~/.shell_common.local ] && source ~/.shell_common.local
