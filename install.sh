@@ -18,13 +18,13 @@ detect_os() {
 
 OS=$(detect_os)
 
-# Change default shell to bash on macOS
-change_default_shell_to_bash() {
-  if [[ "$SHELL" != */bash ]]; then
-    echo "Changing default shell to bash..."
-    chsh -s /bin/bash
+# Change default shell to zsh on macOS
+change_default_shell_to_zsh() {
+  if [[ "$SHELL" != */zsh ]]; then
+    echo "Changing default shell to zsh..."
+    chsh -s /bin/zsh
   else
-    echo "Default shell is already bash"
+    echo "Default shell is already zsh"
   fi
 }
 
@@ -158,7 +158,7 @@ main() {
     macos)
       install_homebrew
       install_macos_packages
-      change_default_shell_to_bash
+      change_default_shell_to_zsh
       ;;
     linux|wsl)
       install_linux_packages
@@ -173,11 +173,16 @@ main() {
 
   echo -e "\e[1;36m Install completed!!!! \e[m"
   echo ""
-  echo "Please restart your shell or run: source ~/.bashrc"
+  if [[ "$OS" == "macos" ]]; then
+    echo "Please restart your shell or run: source ~/.zshrc"
+  else
+    echo "Please restart your shell or run: source ~/.bashrc"
+  fi
 
   if [[ "$OS" == "macos" ]]; then
     echo ""
     echo "macOS specific notes:"
+    echo "  - Default shell has been changed to zsh"
     echo "  - Homebrew has been installed"
     if [ -z "${CI:-}" ]; then
       echo "  - GUI applications have been installed via Homebrew Cask"

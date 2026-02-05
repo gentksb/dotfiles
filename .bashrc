@@ -1,6 +1,4 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
 # If not running interactively, don't do anything
 case $- in
@@ -8,36 +6,27 @@ case $- in
       *) return;;
 esac
 
-# Detect OS
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  IS_MACOS=1
-else
-  IS_MACOS=0
-fi
+# ============================================================
+# Load common shell configuration
+# ============================================================
+[ -f ~/.shell_common ] && source ~/.shell_common
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
+# ============================================================
+# Bash-specific history settings
+# ============================================================
 HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
 shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
+# ============================================================
+# Bash-specific options
+# ============================================================
 shopt -s checkwinsize
 
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# make less more friendly for non-text input files, see lesspipe(1)
-if [ "$IS_MACOS" -eq 0 ]; then
-  [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-fi
+# ============================================================
+# Prompt setup
+# ============================================================
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -49,16 +38,10 @@ case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
 esac
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
 force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
 	color_prompt=yes
     else
 	color_prompt=
@@ -80,72 +63,6 @@ xterm*|rxvt*)
 *)
     ;;
 esac
-
-# enable color support of ls and also add handy aliases
-if [ "$IS_MACOS" -eq 1 ]; then
-  # macOS: use -G flag for colored ls output
-  export CLICOLOR=1
-  export LSCOLORS=GxFxCxDxBxegedabagaced
-  alias ls='ls -G'
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
-else
-  # Linux/WSL: use dircolors
-  if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-  fi
-fi
-
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
-
-# disable lock (Linux only)
-if [ "$IS_MACOS" -eq 0 ]; then
-  stty stop undef
-fi
-
-# direnv
-eval "$(direnv hook bash)"
-
-# fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-# restart shell
-alias restart='exec $SHELL -l'
 
 # Codespaces bash prompt theme
 __bash_prompt() {
@@ -170,41 +87,65 @@ __bash_prompt() {
 }
 __bash_prompt
 
-# Homebrew (macOS)
-if [ "$IS_MACOS" -eq 1 ]; then
-  # Apple Silicon
-  if [ -f "/opt/homebrew/bin/brew" ]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-  # Intel Mac
-  elif [ -f "/usr/local/bin/brew" ]; then
-    eval "$(/usr/local/bin/brew shellenv)"
+# ============================================================
+# Less pager (Linux only)
+# ============================================================
+if [ "${IS_MACOS:-0}" -eq 0 ]; then
+  [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+fi
+
+# ============================================================
+# Bash-specific aliases
+# ============================================================
+
+# Add an "alert" alias for long running commands (Linux only)
+if [ "${IS_MACOS:-0}" -eq 0 ]; then
+  alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+fi
+
+# Load bash-specific aliases if exists
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# ============================================================
+# Bash completion
+# ============================================================
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
   fi
 fi
 
+# ============================================================
+# Disable flow control (Linux only)
+# ============================================================
+if [ "${IS_MACOS:-0}" -eq 0 ]; then
+  stty stop undef
+fi
+
+# ============================================================
+# Tool integrations
+# ============================================================
+
+# direnv
+if command -v direnv &> /dev/null; then
+  eval "$(direnv hook bash)"
+fi
+
+# fzf
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 # uv (Python package manager)
-if [ "$IS_MACOS" -eq 1 ]; then
+if [ "${IS_MACOS:-0}" -eq 1 ]; then
   if command -v uv &> /dev/null; then
     eval "$(uv generate-shell-completion bash)"
   fi
 fi
 
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
-
-# wslu
-if [ -n "$WSL_DISTRO_NAME" ]; then
-    export BROWSER="wslview"
-    export DISPLAY=:0
-fi
-
+# ============================================================
 # Load local settings (not tracked in git)
+# ============================================================
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local
