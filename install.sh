@@ -20,6 +20,12 @@ OS=$(detect_os)
 
 # Change default shell to zsh on macOS
 change_default_shell_to_zsh() {
+  # Skip in CI environment (chsh requires password)
+  if [ -n "${CI:-}" ]; then
+    echo "Skipping default shell change in CI environment"
+    return
+  fi
+
   if [[ "$SHELL" != */zsh ]]; then
     echo "Changing default shell to zsh..."
     chsh -s /bin/zsh
@@ -182,15 +188,15 @@ main() {
   if [[ "$OS" == "macos" ]]; then
     echo ""
     echo "macOS specific notes:"
-    echo "  - Default shell has been changed to zsh"
     echo "  - Homebrew has been installed"
     if [ -z "${CI:-}" ]; then
+      echo "  - Default shell has been changed to zsh"
       echo "  - GUI applications have been installed via Homebrew Cask"
       echo "  - Claude Code CLI has been installed (run 'claude' to authenticate)"
       echo "  - You may need to grant permissions to some applications (Karabiner-Elements, Rectangle)"
       echo "  - Consider configuring RayCast and Karabiner-Elements according to your preferences"
     else
-      echo "  - GUI applications and Claude Code CLI were skipped (CI environment)"
+      echo "  - GUI applications, Claude Code CLI, and shell change were skipped (CI environment)"
     fi
   fi
 }
