@@ -146,6 +146,14 @@ if [ "${IS_MACOS:-0}" -eq 1 ]; then
 fi
 
 # ============================================================
+# WSL specific settings
+# ============================================================
+if [ -n "$WSL_DISTRO_NAME" ]; then
+  export BROWSER="wslview"
+  export DISPLAY=:0
+fi
+
+# ============================================================
 # Load local settings (not tracked in git)
 # ============================================================
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local

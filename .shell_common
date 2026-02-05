@@ -71,14 +71,6 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 
 # ============================================================
-# WSL specific settings
-# ============================================================
-if [ -n "$WSL_DISTRO_NAME" ]; then
-  export BROWSER="wslview"
-  export DISPLAY=:0
-fi
-
-# ============================================================
 # Load local settings (not tracked in git)
 # Shell-specific local files are loaded in .bashrc/.zshrc
 # ============================================================
