@@ -98,3 +98,6 @@ fi
 # Load local settings (not tracked in git)
 # ============================================================
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+# for Claude code Path completion
+export PATH="$HOME/.local/bin:$PATH"

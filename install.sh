@@ -76,14 +76,6 @@ install_macos_packages() {
 
   # Install fzf key bindings and fuzzy completion
   $(brew --prefix)/opt/fzf/install --all
-
-  # Install Claude Code CLI (skip in CI environment)
-  if [ -z "${CI:-}" ]; then
-    echo "Installing Claude Code CLI..."
-    curl -fsSL https://claude.ai/install.sh | bash
-  else
-    echo "Skipping Claude Code CLI in CI environment (requires authentication)"
-  fi
 }
 
 # Install packages on Linux
@@ -173,7 +165,7 @@ main() {
     echo "  - Homebrew has been installed"
     if [ -z "${CI:-}" ]; then
       echo "  - GUI applications have been installed via Homebrew Cask"
-      echo "  - Claude Code CLI has been installed (run 'claude' to authenticate)"
+      echo "  - Claude Code CLI need to installed manually (requires authentication)"
       echo "  - You may need to grant permissions to some applications (Karabiner-Elements, Rectangle)"
       echo "  - Consider configuring RayCast and Karabiner-Elements according to your preferences"
     else
