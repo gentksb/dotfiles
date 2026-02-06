@@ -9,18 +9,38 @@ Splunk Observability CloudのAPM APIを使用してサービストポロジー�
 
 ## 環境設定
 
-以下の環境変数を設定:
+### 認証情報（SF_TOKEN / SF_REALM）
 
-```bash
-export SF_TOKEN="your-api-token"    # 必須: Organization Access Token
-export SF_REALM="us1"               # オプション: realm (デフォルト: us1)
+スクリプトの実行には環境変数 `SF_TOKEN`（必須）と `SF_REALM`（デフォルト: `us1`）が必要。
+これらは `settings.local.json` の `env` セクションで設定する。`settings.local.json` はgit管理対象外のため、認証情報が誤ってコミットされることを防げる。
+
+**スキルのインストールスコープに応じた設定先**:
+
+| インストールスコープ | 設定ファイル |
+|-------------------|------------|
+| ユーザースコープ（`~/.claude/skills/`） | `~/.claude/settings.local.json` |
+| プロジェクトスコープ（`.claude/skills/`） | `<project>/.claude/settings.local.json` |
+
+設定例:
+
+```json
+{
+  "env": {
+    "SF_TOKEN": "your-api-token",
+    "SF_REALM": "us1"
+  }
+}
 ```
 
-REALMが未設定の場合、スクリプト実行時に確認する。
+既存の `settings.local.json` がある場合は `env` セクションのみ追記・マージすること。設定後、新しいClaude Codeセッションから自動的に環境変数として注入される。
 
-## サービストポロジー取得
+### environment パラメータ
 
 `--environment` にはアプリケーションで設定している環境名（`deployment.environment` 属性の値）を指定する。以下の `production` は例であり、実際の環境名に置き換えること。
+
+**重要**: 会話のコンテキストやプロンプトから `--environment` に指定すべき値が判断できない場合、AskUserQuestion ツールを使用して環境名をユーザーに確認すること。推測して実行してはならない。
+
+## サービストポロジー取得
 
 ### 全サービスのトポロジー
 

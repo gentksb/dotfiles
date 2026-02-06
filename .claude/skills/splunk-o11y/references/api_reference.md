@@ -383,16 +383,49 @@ X-SF-Token: <your_access_token>
 
 ### SSEレスポンス形式
 
-レスポンスはSSE（Server-Sent Events）ストリームで、複数のイベントタイプを含む。各`data:`フィールドは複数行にまたがるJSON。
+レスポンスはSSE（Server-Sent Events）ストリームで返却される。
 
-#### イベントタイプ
+#### ワイヤーフォーマット
 
-| イベント | 説明 |
-|---------|------|
-| `control-message` | ストリーム制御メッセージ（`STREAM_START`, `JOB_START`, `END_OF_CHANNEL`） |
-| `metadata` | 時系列のメタデータ（tsId、プロパティ、ラベル） |
-| `data` | 実際のデータポイント |
-| `message` | 情報メッセージ |
+**重要**: SignalFlowのSSEでは、1つのJSONオブジェクトが複数の `data:` 行にまたがる。標準的なSSE（1行1JSON）とは異なるため注意。
+
+```
+event: metadata
+data:  {
+data:    "properties" : {
+data:      "sf_service" : "checkout",
+data:      "sf_streamLabel" : "throughput"
+data:    },
+data:    "tsId" : "AAAAAF0-GPM"
+data:  }
+                          ← 空行（イベント区切り）
+event: data
+data:  {
+data:    "data" : [ {
+data:      "tsId" : "AAAAAF0-GPM",
+data:      "value" : 82
+data:    } ],
+data:    "logicalTimestampMs" : 1770338520000
+data:  }
+```
+
+パーサー実装時の要点:
+- 各行から `data:` プレフィックス（5文字）を除去し、残りをバッファに蓄積
+- **空行でイベントが区切られる**。空行検出時にバッファを結合（`\n`.join）してJSONパース
+- `event:` 行で新しいイベントタイプが通知される。`data:` 行はその時点の `event` タイプに属する
+- `iter_lines()` 等で空行が `""` として返される場合と `None` として返される場合があるため、両方をハンドリングすること
+
+#### イベントタイプと出現順序
+
+ストリームは以下の順序でイベントを返す:
+
+| 順序 | イベント | 説明 |
+|-----|---------|------|
+| 1 | `control-message` | `STREAM_START`、`JOB_START` などのストリーム制御 |
+| 2 | `metadata` | 各時系列（tsId）のメタデータ。**全てのmetadataが先に届く** |
+| 3 | `data` | データポイント。タイムスタンプごとに1イベント |
+| 4 | `message` | 情報・警告メッセージ（データポイント間に混在） |
+| 終了 | `control-message` | `END_OF_CHANNEL` でストリーム完了 |
 
 #### metadata イベント構造
 
@@ -409,6 +442,10 @@ X-SF-Token: <your_access_token>
 }
 ```
 
+- `tsId`: 時系列の一意識別子。後続の `data` イベントでこのIDに対応する値が届く
+- `properties.sf_streamLabel`: SignalFlowプログラム内の `.publish('label')` で指定したラベル
+- `properties.sf_service`: APMメトリクスの場合、サービス名が格納される
+
 #### data イベント構造
 
 ```json
@@ -422,7 +459,7 @@ X-SF-Token: <your_access_token>
 }
 ```
 
-**注意**: `data`フィールドはリスト形式（`[{tsId, value}, ...]`）。
+**注意: `data` フィールドはリスト形式**（`[{tsId, value}, ...]`）であり、dict形式（`{tsId: value, ...}`）ではない。1つの `data` イベントに複数の時系列の値がまとめて含まれる。
 
 ### APMメトリクス用SignalFlowプログラム例
 
