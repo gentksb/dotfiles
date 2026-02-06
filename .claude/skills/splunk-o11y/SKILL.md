@@ -1,11 +1,11 @@
 ---
 name: splunk-o11y
-description: Splunk Observability Cloud APM APIを使用してサービストポロジーとトレースを取得・分析するためのスキル。デバッグ時の問題特定、サービス依存関係の調査、環境別のサービス比較に使用。トレースID、サービス名、APM、依存関係、トポロジーなどのキーワードで起動。
+description: Splunk Observability Cloud APM APIを使用してサービストポロジー、トレース、サービスメトリクス（エラー率・レイテンシ・スループット）を取得・分析するためのスキル。デバッグ時の問題特定、サービス依存関係の調査、環境別のサービス比較に使用。トレースID、サービス名、APM、依存関係、トポロジー、エラー率、レイテンシ、スループットなどのキーワードで起動。
 ---
 
 # Splunk Observability Cloud APM
 
-Splunk Observability CloudのAPM APIを使用してサービストポロジーとトレースを取得する。
+Splunk Observability CloudのAPM APIを使用してサービストポロジー、トレース、サービスメトリクスを取得する。
 
 ## 環境設定
 
@@ -62,13 +62,65 @@ python scripts/get_trace.py <trace-id> --segments
 python scripts/get_trace.py <trace-id> --segment-timestamp 1704067200000000
 ```
 
+## サービスメトリクス取得
+
+SignalFlow APIを使用して、APMサービスメトリクス（エラー率、P99レイテンシ、スループット）を取得する。
+
+### エラー率（全サービス）
+
+```bash
+python scripts/get_service_metrics.py --environment production --metric error-rate
+```
+
+### P99レイテンシ（特定サービス）
+
+```bash
+python scripts/get_service_metrics.py --environment production --metric latency --service checkout
+```
+
+### スループット（カスタム時間範囲）
+
+```bash
+python scripts/get_service_metrics.py --environment production --metric throughput \
+    --start-time 2024-01-01T00:00:00Z --end-time 2024-01-01T01:00:00Z
+```
+
+### オプション
+
+| オプション | 説明 | デフォルト |
+|-----------|------|-----------|
+| `--environment` | 環境名（必須） | - |
+| `--metric` | `error-rate`, `latency`, `throughput` のいずれか（必須） | - |
+| `--service` | サービス名でフィルタ | 全サービス |
+| `--start-time` | 開始時刻（ISO8601） | 10分前 |
+| `--end-time` | 終了時刻（ISO8601） | 現在 |
+| `--resolution` | 解像度（ミリ秒） | 60000 |
+
+### 出力例
+
+```json
+{
+  "metric_type": "error-rate",
+  "environment": "production",
+  "results": [
+    {
+      "service": "checkout",
+      "error_rate_pct": 50.0,
+      "error_count": 10,
+      "total_count": 20
+    }
+  ]
+}
+```
+
 ## デバッグワークフロー
 
-1. **問題のトレースを特定**: トレースIDを取得
-2. **トレース詳細を取得**: `get_trace.py` でスパン一覧を確認
-3. **関連サービスを特定**: スパンの `serviceName` を確認
-4. **サービス依存関係を調査**: `get_topology.py --service <name>` で上流・下流を確認
-5. **環境比較**: 異なる `--environment` で結果を比較
+1. **サービス健全性を確認**: `get_service_metrics.py --metric error-rate` で全サービスのエラー率を確認
+2. **問題サービスを特定**: エラー率やレイテンシが異常なサービスを絞り込む
+3. **サービス依存関係を調査**: `get_topology.py --service <name>` で上流・下流を確認
+4. **問題のトレースを特定**: トレースIDを取得
+5. **トレース詳細を取得**: `get_trace.py` でスパン一覧を確認
+6. **環境比較**: 異なる `--environment` で結果を比較
 
 ## APIリファレンス
 

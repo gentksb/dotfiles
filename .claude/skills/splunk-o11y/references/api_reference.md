@@ -341,3 +341,124 @@ curl -X GET "https://api.us1.signalfx.com/v2/apm/trace/abc123def456/latest" \
   -H "X-SF-Token: YOUR_ACCESS_TOKEN" \
   -H "Accept: application/x-ndjson"
 ```
+
+---
+
+## 8. SignalFlow Execute API
+
+SignalFlowプログラムを実行し、リアルタイムまたは過去のメトリクスデータをSSE（Server-Sent Events）ストリームとして取得するAPI。
+
+**ベースURL**: `https://stream.{REALM}.signalfx.com/v2`
+
+### エンドポイント
+
+| メソッド | パス | 説明 |
+|---------|------|------|
+| POST | `/v2/signalflow/execute` | SignalFlowプログラムを実行 |
+
+### リクエスト
+
+**ヘッダー**:
+```
+Content-Type: application/json
+X-SF-Token: <your_access_token>
+```
+
+**クエリパラメータ**:
+
+| パラメータ | 型 | 必須 | 説明 |
+|-----------|-----|------|------|
+| `start` | int64 | はい | 開始時刻（エポックミリ秒） |
+| `stop` | int64 | いいえ | 終了時刻（エポックミリ秒）。省略時はリアルタイムストリーム |
+| `resolution` | int64 | いいえ | データポイント解像度（ミリ秒） |
+| `immediate` | boolean | いいえ | `true`で即時結果返却（過去データ向け） |
+
+**リクエストボディ**:
+
+```json
+{
+  "programText": "data('service.request.count', filter=filter('sf_environment', 'production')).sum(by=['sf_service']).publish('throughput')"
+}
+```
+
+### SSEレスポンス形式
+
+レスポンスはSSE（Server-Sent Events）ストリームで、複数のイベントタイプを含む。各`data:`フィールドは複数行にまたがるJSON。
+
+#### イベントタイプ
+
+| イベント | 説明 |
+|---------|------|
+| `control-message` | ストリーム制御メッセージ（`STREAM_START`, `JOB_START`, `END_OF_CHANNEL`） |
+| `metadata` | 時系列のメタデータ（tsId、プロパティ、ラベル） |
+| `data` | 実際のデータポイント |
+| `message` | 情報メッセージ |
+
+#### metadata イベント構造
+
+```json
+{
+  "properties": {
+    "sf_service": "checkout",
+    "sf_environment": "production",
+    "sf_streamLabel": "throughput",
+    "sf_originatingMetric": "service.request.count",
+    "sf_resolutionMs": 60000
+  },
+  "tsId": "AAAAAF0-GPM"
+}
+```
+
+#### data イベント構造
+
+```json
+{
+  "data": [
+    {"tsId": "AAAAAF0-GPM", "value": 82},
+    {"tsId": "AAAAABr7PB8", "value": 206}
+  ],
+  "logicalTimestampMs": 1770338520000,
+  "maxDelayMs": 10000
+}
+```
+
+**注意**: `data`フィールドはリスト形式（`[{tsId, value}, ...]`）。
+
+### APMメトリクス用SignalFlowプログラム例
+
+#### エラー率
+
+```
+errors = data('service.request.count',
+  filter=filter('sf_error', 'true') and filter('sf_environment', 'production'))
+  .sum(by=['sf_service']).publish('errors')
+total = data('service.request.count',
+  filter=filter('sf_environment', 'production'))
+  .sum(by=['sf_service']).publish('total')
+```
+
+#### P99レイテンシ
+
+```
+data('service.request.duration.ns.p99',
+  filter=filter('sf_environment', 'production'))
+  .mean(by=['sf_service']).publish('latency_p99')
+```
+
+#### スループット
+
+```
+data('service.request.count',
+  filter=filter('sf_environment', 'production'))
+  .sum(by=['sf_service']).publish('throughput')
+```
+
+### サービスフィルタリング
+
+特定サービスに絞り込むには`filter('sf_service', 'name')`を追加:
+
+```
+data('service.request.count',
+  filter=filter('sf_environment', 'production') and filter('sf_service', 'checkout'))
+  .sum(by=['sf_service']).publish('throughput')
+```
