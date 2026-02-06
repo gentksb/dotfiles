@@ -42,7 +42,7 @@ install_macos_packages() {
   echo "Installing macOS packages..."
 
   # Install CLI tools
-  brew install direnv git curl fzf gh jq bitwarden-cli
+  brew install direnv git curl fzf gh jq
 
   # Install uv (Python package manager)
   brew install uv
@@ -54,7 +54,6 @@ install_macos_packages() {
     # Productivity & Utilities
     brew install --cask raycast
     brew install --cask rectangle
-    brew install --cask karabiner-elements
     brew install --cask alt-tab
 
     # Development Tools
