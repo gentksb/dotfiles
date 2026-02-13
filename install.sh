@@ -53,7 +53,7 @@ install_macos_packages() {
 
     # Productivity & Utilities
     brew install --cask raycast
-    brew install --cask rectangle
+    brew install --cask macsyzones
     brew install --cask alt-tab
 
     # Development Tools

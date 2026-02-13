@@ -1,6 +1,7 @@
 ### all ignore ###
 /*
 /.**
+/**/*
 
 ### not ignore ###
 !/.devcontainer/devcontainer.json
