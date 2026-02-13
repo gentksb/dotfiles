@@ -60,6 +60,7 @@ install_macos_packages() {
     brew install --cask visual-studio-code
     brew install --cask ghostty
     brew install --cask orbstack
+    brew install --cask font-udev-gothic-nf
 
     # Browsers
     brew install --cask google-chrome
