@@ -1,4 +1,9 @@
 {
+  "model": "opus",
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  },
   "enabledPlugins": {
     "example-skills@anthropic-agent-skills": true,
     "document-skills@anthropic-agent-skills": true,
@@ -13,6 +18,12 @@
   "language": "Japanese",
   "spinnerVerbs": {
     "mode": "replace",
-    "verbs": ["うるとらしんく", "少女思考中...", "少女祈祷中...", "もみじ饅頭でも食べながらまったりお待ちください", "豆大福でも食べながらまったりお待ちください"]
+    "verbs": [
+      "うるとらしんく",
+      "少女思考中...",
+      "少女祈祷中...",
+      "もみじ饅頭でも食べながらまったりお待ちください",
+      "豆大福でも食べながらまったりお待ちください"
+    ]
   }
 }

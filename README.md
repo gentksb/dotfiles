@@ -15,12 +15,14 @@ Console theme by Codespaces default.
 ## Features
 
 ### Common Tools
+
 - Git configuration
 - direnv
 - fzf (fuzzy finder)
 - Codespaces-optimized bash prompt
 
 ### macOS Specific
+
 - Homebrew package manager (auto-installed)
 - GitHub CLI (gh)
 - jq (JSON processor)
@@ -30,13 +32,13 @@ Console theme by Codespaces default.
 - GUI Applications:
   - **Productivity & Utilities**:
     - RayCast (launcher)
-    - Rectangle (window manager)
-    - Karabiner-Elements (keyboard customizer)
+    - macsyzones (window manager)
     - Alt-Tab (window switcher)
   - **Development Tools**:
     - Visual Studio Code (code editor)
     - Ghostty (terminal emulator)
     - OrbStack (container runtime)
+    - UDEV Gothic NF (programming font)
   - **Browsers**:
     - Google Chrome
   - **Communication**:
@@ -44,6 +46,7 @@ Console theme by Codespaces default.
     - Discord
 
 ### Development Environment
+
 - **Node.js**: Managed via pnpm
 - **Python**: Managed via uv
 
@@ -58,12 +61,14 @@ cd ~/dotfiles
 ```
 
 The installation script will:
+
 1. Install Homebrew (if not already installed)
 2. Install all CLI tools and GUI applications
 3. Create symlinks for dotfiles in your home directory
 4. Backup existing dotfiles to `~/.dotbackup`
 
 After installation:
+
 - Restart your terminal or run `source ~/.bash_profile`
 - Authenticate Claude Code CLI: Run `claude` and follow the OAuth authentication flow (requires Claude Pro/Max or active billing)
 - Grant necessary permissions to GUI applications (Karabiner-Elements, Rectangle)
@@ -78,6 +83,7 @@ cd ~/dotfiles
 ```
 
 The installation script will:
+
 1. Install required packages via apt-get
 2. Install fzf from source
 3. Create symlinks for dotfiles in your home directory
@@ -88,34 +94,40 @@ After installation, restart your terminal or run `source ~/.bashrc`
 ## Automatic Installation
 
 Dotfiles are automatically installed when:
+
 - GitHub Codespaces is created
 - VSCode remote container is created
 
 ## Configuration
 
 ### Shell
+
 - `.bashrc` - Main bash configuration (cross-platform)
 - `.bash_profile` - macOS login shell configuration
 
 ### Git
+
 - `.gitconfig` - Git user configuration
 - `.gitignore_global` - Global gitignore patterns
 
 ## Notes
 
 ### macOS
+
 - Uses system default color scheme (no custom terminal colors)
 - Homebrew is installed to `/opt/homebrew` (Apple Silicon) or `/usr/local` (Intel)
 - GUI applications and Claude Code CLI can be skipped in CI environments by setting `CI=true`
 - Claude Code CLI requires authentication after installation (Claude Pro/Max subscription or active billing)
 
 ### Linux/WSL
+
 - Uses dircolors for terminal color customization
 - WSL-specific browser integration via wslview
 
 ## Development
 
 This repository includes:
+
 - CI/CD testing on both Ubuntu and macOS
 - DevContainer configuration for VSCode
 - Claude AI integration with Japanese language support

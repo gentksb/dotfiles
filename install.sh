@@ -41,38 +41,13 @@ install_homebrew() {
 install_macos_packages() {
   echo "Installing macOS packages..."
 
-  # Install CLI tools
-  brew install direnv git curl fzf gh jq
+  local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-  # Install uv (Python package manager)
-  brew install uv
-
-  # Install GUI applications (skip in CI environment)
   if [ -z "${CI:-}" ]; then
-    echo "Installing GUI applications..."
-
-    # Productivity & Utilities
-    brew install --cask raycast
-    brew install --cask macsyzones
-    brew install --cask alt-tab
-
-    # Development Tools
-    brew install --cask visual-studio-code
-    brew install --cask ghostty
-    brew install --cask orbstack
-    brew install --cask font-udev-gothic-nf
-
-    # Browsers
-    brew install --cask google-chrome
-
-    # Communication
-    brew install --cask slack
-    brew install --cask discord
-
-    # Password Manager
-    brew install --cask bitwarden
+    brew bundle --file="$script_dir/Brewfile"
   else
     echo "Skipping GUI applications in CI environment"
+    brew bundle --file="$script_dir/Brewfile" --no-cask
   fi
 
   # Install fzf key bindings and fuzzy completion

@@ -17,6 +17,7 @@
 !/.zprofile
 !/.shell_common
 !/install.sh
+!CLAUDE.md
 !/.claude/
 !/.claude/CLAUDE.md
 !/.claude/settings.json
@@ -27,3 +28,4 @@
 !/.config/
 !/.config/git/
 !/.config/git/ignore
+!Brewfile
