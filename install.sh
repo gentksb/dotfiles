@@ -47,7 +47,8 @@ install_macos_packages() {
     brew bundle --file="$script_dir/Brewfile"
   else
     echo "Skipping GUI applications in CI environment"
-    brew bundle --file="$script_dir/Brewfile" --no-cask
+    HOMEBREW_BUNDLE_CASK_SKIP="$(awk '/^cask /{gsub(/"/, "", $2); printf "%s ", $2}' "$script_dir/Brewfile")" \
+      brew bundle --file="$script_dir/Brewfile"
   fi
 
   # Install fzf key bindings and fuzzy completion

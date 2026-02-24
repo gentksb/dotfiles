@@ -29,5 +29,3 @@ cask "discord"
 # Password Manager
 cask "bitwarden"
 
-# Input Method
-cask "google-japanese-ime"
