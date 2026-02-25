@@ -106,6 +106,14 @@ link_to_homedir() {
     ln -snf "$dotfile" "$HOME"
     echo "Linked: $dotfile"
   done
+
+  # Link individual files from excluded directories
+  mkdir -p "$HOME/.claude"
+  for file in "$script_dir"/.claude/statusline-command.sh; do
+    [ -f "$file" ] || continue
+    ln -snf "$file" "$HOME/.claude/$(basename "$file")"
+    echo "Linked: $file"
+  done
 }
 
 # Main installation flow
@@ -127,6 +135,7 @@ main() {
   esac
 
   link_to_homedir
+  link_claude_files
 
   echo -e "\e[1;36m Install completed!!!! \e[m"
   echo ""

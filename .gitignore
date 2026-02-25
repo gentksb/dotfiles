@@ -25,6 +25,7 @@
 !/.claude/skills/**
 !/.claude/commands/
 !/.claude/commands/**
+!/.claude/statusline-command.sh
 !/.config/
 !/.config/git/
 !/.config/git/ignore
