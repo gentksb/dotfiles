@@ -135,7 +135,6 @@ main() {
   esac
 
   link_to_homedir
-  link_claude_files
 
   echo -e "\e[1;36m Install completed!!!! \e[m"
   echo ""
