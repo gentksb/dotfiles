@@ -1,5 +1,4 @@
 {
-  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
@@ -19,5 +18,6 @@
       "もみじ饅頭でも食べながらまったりお待ちください",
       "豆大福でも食べながらまったりお待ちください"
     ]
-  }
+  },
+  "model": "opusplan"
 }

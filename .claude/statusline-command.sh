@@ -25,8 +25,7 @@ context_str=""
 if [ -n "$used_pct" ]; then
   # Round to integer
   used_int=$(printf "%.0f" "$used_pct")
-  remaining_int=$(printf "%.0f" "$remaining_pct")
-  context_str="ctx: ${used_int}% used / ${remaining_int}% left"
+  context_str="ctx: ${used_int}% used"
 fi
 
 # Build location segment
