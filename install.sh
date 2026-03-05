@@ -72,6 +72,15 @@ install_linux_packages() {
   ~/.fzf/install --all
 }
 
+# Configure macOS system defaults
+configure_macos_defaults() {
+  echo "Configuring macOS defaults..."
+  defaults write com.apple.mouse.scaling -int 8
+  defaults write com.apple.dock autohide-delay -int 0
+  killall Dock
+  echo "macOS defaults configured"
+}
+
 # Link dotfiles to home directory
 link_to_homedir() {
   echo "Backing up old dotfiles..."
@@ -124,6 +133,7 @@ main() {
     macos)
       install_homebrew
       install_macos_packages
+      configure_macos_defaults
       ;;
     linux|wsl)
       install_linux_packages
