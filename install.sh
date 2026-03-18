@@ -70,6 +70,11 @@ install_linux_packages() {
   rm -rf ~/.fzf
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install --all
+
+  # Install Bun
+  if ! command -v bun &> /dev/null; then
+    curl -fsSL https://bun.sh/install | bash
+  fi
 }
 
 # Configure macOS system defaults

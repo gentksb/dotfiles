@@ -6,7 +6,9 @@
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
     "claude-code-setup@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": false,
+    "claude-md-management@claude-plugins-official": true
   },
   "language": "Japanese",
   "spinnerVerbs": {
@@ -19,5 +21,8 @@
       "豆大福でも食べながらまったりお待ちください"
     ]
   },
-  "model": "opusplan"
+  "skipAutoPermissionPrompt": true,
+  "permissions": {
+    "defaultMode": "auto"
+  }
 }
