@@ -4,8 +4,10 @@
 /**/*
 
 ### not ignore ###
+!/.devcontainer/
 !/.devcontainer/devcontainer.json
 !/.devcontainer/Dockerfile
+!/.github/
 !/.github/**
 !/.gitignore_global
 !/.gitconfig

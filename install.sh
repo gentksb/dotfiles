@@ -53,13 +53,18 @@ install_macos_packages() {
 
   # Install fzf key bindings and fuzzy completion
   $(brew --prefix)/opt/fzf/install --all
+
+  # Install Bun
+  if ! command -v bun &> /dev/null; then
+    curl -fsSL https://bun.sh/install | bash
+  fi
 }
 
 # Install packages on Linux
 install_linux_packages() {
   echo "Installing Linux packages..."
   sudo apt-get update
-  sudo apt-get install -y direnv git curl
+  sudo apt-get install -y direnv git curl unzip
 
   # Install wslu for WSL
   if [[ "$OS" == "wsl" ]]; then
@@ -70,6 +75,11 @@ install_linux_packages() {
   rm -rf ~/.fzf
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install --all
+
+  # Install Bun
+  if ! command -v bun &> /dev/null; then
+    curl -fsSL https://bun.sh/install | bash
+  fi
 }
 
 # Configure macOS system defaults
