@@ -23,7 +23,7 @@ fi
 # ============================================================
 # Bun (Linux/WSL)
 # ============================================================
-if [ "$IS_MACOS" -eq 0 ] && [ -d "$HOME/.bun/bin" ]; then
+if [ -d "$HOME/.bun/bin" ]; then
   export PATH="$HOME/.bun/bin:$PATH"
 fi
 

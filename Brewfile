@@ -6,7 +6,6 @@ brew "fzf"
 brew "gh"
 brew "jq"
 brew "uv"
-brew "bun"
 
 # Productivity & Utilities
 cask "raycast"

@@ -53,6 +53,11 @@ install_macos_packages() {
 
   # Install fzf key bindings and fuzzy completion
   $(brew --prefix)/opt/fzf/install --all
+
+  # Install Bun
+  if ! command -v bun &> /dev/null; then
+    curl -fsSL https://bun.sh/install | bash
+  fi
 }
 
 # Install packages on Linux
