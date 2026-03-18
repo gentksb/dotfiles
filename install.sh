@@ -55,7 +55,7 @@ install_macos_packages() {
   $(brew --prefix)/opt/fzf/install --all
 
   # Install Bun
-  if ! command -v bun &> /dev/null; then
+  if [ ! -f "$HOME/.bun/bin/bun" ]; then
     curl -fsSL https://bun.sh/install | bash
   fi
 }
@@ -77,7 +77,7 @@ install_linux_packages() {
   ~/.fzf/install --all
 
   # Install Bun
-  if ! command -v bun &> /dev/null; then
+  if [ ! -f "$HOME/.bun/bin/bun" ]; then
     curl -fsSL https://bun.sh/install | bash
   fi
 }
