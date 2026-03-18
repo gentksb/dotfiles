@@ -64,7 +64,7 @@ install_macos_packages() {
 install_linux_packages() {
   echo "Installing Linux packages..."
   sudo apt-get update
-  sudo apt-get install -y direnv git curl
+  sudo apt-get install -y direnv git curl unzip
 
   # Install wslu for WSL
   if [[ "$OS" == "wsl" ]]; then
