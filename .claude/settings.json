@@ -1,7 +1,11 @@
 {
+  "permissions": {
+    "defaultMode": "auto"
+  },
   "statusLine": {
     "type": "command",
-    "command": "bash ~/.claude/statusline-command.sh"
+    "command": "bunx -y ccstatusline@latest",
+    "padding": 0
   },
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
@@ -22,7 +26,5 @@
     ]
   },
   "skipAutoPermissionPrompt": true,
-  "permissions": {
-    "defaultMode": "auto"
-  }
+  "model": "opusplan"
 }
