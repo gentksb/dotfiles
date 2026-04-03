@@ -32,3 +32,5 @@
 !/.config/git/
 !/.config/git/ignore
 !Brewfile
+!/.config/ccstatusline/
+!/.config/ccstatusline/settings.json

@@ -2,10 +2,17 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "model": "opusplan",
   "statusLine": {
     "type": "command",
     "command": "bunx -y ccstatusline@latest",
     "padding": 0
+  },
+  "env": {
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "ENABLE_TOOL_SEARCH": true
   },
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
@@ -13,6 +20,14 @@
     "skill-creator@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": false,
     "claude-md-management@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "chrome-devtools-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "ChromeDevTools/chrome-devtools-mcp"
+      }
+    }
   },
   "language": "Japanese",
   "spinnerVerbs": {
@@ -25,6 +40,6 @@
       "豆大福でも食べながらまったりお待ちください"
     ]
   },
-  "skipAutoPermissionPrompt": true,
-  "model": "opusplan"
+  "autoDreamEnabled": true,
+  "skipAutoPermissionPrompt": true
 }
