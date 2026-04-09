@@ -20,15 +20,6 @@
         "type": "separator"
       },
       {
-        "id": "3",
-        "type": "context-percentage",
-        "color": "brightBlack"
-      },
-      {
-        "id": "6",
-        "type": "separator"
-      },
-      {
         "id": "d3aafb50-d4f3-49d8-88b5-bcd07846612e",
         "type": "reset-timer"
       },
@@ -55,7 +46,20 @@
         "type": "separator"
       }
     ],
-    [],
+    [
+      {
+        "id": "a28845b9-a850-4e72-aaf4-b6b761e2060c",
+        "type": "context-bar"
+      },
+      {
+        "id": "e5dd5411-ee1d-4480-b2b2-0d141c86cb56",
+        "type": "separator"
+      },
+      {
+        "id": "8e073862-5f06-457f-bdd7-db3a70b6c2e6",
+        "type": "session-usage"
+      }
+    ],
     []
   ],
   "flexMode": "full-minus-40",
