@@ -20,36 +20,38 @@
         "type": "separator"
       },
       {
-        "id": "d3aafb50-d4f3-49d8-88b5-bcd07846612e",
-        "type": "reset-timer"
+        "id": "ceab6502-716f-499b-a5a7-31d583c5c3f6",
+        "type": "git-status"
       },
       {
-        "id": "c6588f46-ab92-4b35-9754-8bf08f423cf4",
+        "id": "6ff155d3-4dad-43e6-8455-977f75c95e2f",
         "type": "separator"
       },
       {
-        "id": "1",
-        "type": "model",
-        "color": "cyan"
-      },
-      {
-        "id": "0e0be872-bd35-4cc4-8994-5d9e82acca0f",
-        "type": "separator"
-      },
-      {
-        "id": "7",
-        "type": "version",
-        "color": "yellow"
-      },
-      {
-        "id": "2",
-        "type": "separator"
+        "id": "08840280-741c-4fab-8587-1153d39e4930",
+        "type": "git-pr"
       }
     ],
     [
       {
-        "id": "a28845b9-a850-4e72-aaf4-b6b761e2060c",
-        "type": "context-bar"
+        "id": "700e8da5-6043-4e9f-8f63-cc46cd67ca9b",
+        "type": "model"
+      },
+      {
+        "id": "45814081-ea27-45b3-a9a1-20f5c06eeea5",
+        "type": "separator"
+      },
+      {
+        "id": "d8c5a845-9ac8-4906-8c49-6db51ce12558",
+        "type": "thinking-effort"
+      },
+      {
+        "id": "7b1a5c85-e898-40b1-8034-19d26dc254d0",
+        "type": "separator"
+      },
+      {
+        "id": "31be1e4d-42cd-454f-8c71-5b80426fc6cb",
+        "type": "context-percentage"
       },
       {
         "id": "e5dd5411-ee1d-4480-b2b2-0d141c86cb56",
@@ -58,6 +60,22 @@
       {
         "id": "8e073862-5f06-457f-bdd7-db3a70b6c2e6",
         "type": "session-usage"
+      },
+      {
+        "id": "651e6b96-3f00-42fa-9ebf-f6e30b379740",
+        "type": "separator"
+      },
+      {
+        "id": "6102a96b-3dbc-4353-b992-c79517e44068",
+        "type": "reset-timer"
+      },
+      {
+        "id": "f78be908-ce65-4fff-b9d6-d8b516397a06",
+        "type": "separator"
+      },
+      {
+        "id": "c74f54ce-ae6c-45eb-80e4-10a369e1e1ab",
+        "type": "weekly-usage"
       }
     ],
     []
@@ -67,6 +85,7 @@
   "colorLevel": 2,
   "inheritSeparatorColors": false,
   "globalBold": false,
+  "minimalistMode": false,
   "powerline": {
     "enabled": false,
     "separators": [
@@ -77,6 +96,7 @@
     ],
     "startCaps": [],
     "endCaps": [],
-    "autoAlign": false
+    "autoAlign": false,
+    "continueThemeAcrossLines": false
   }
 }

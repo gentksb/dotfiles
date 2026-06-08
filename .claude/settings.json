@@ -6,9 +6,20 @@
     "ENABLE_TOOL_SEARCH": "true"
   },
   "permissions": {
+    "allow": [
+      "mcp__claude-in-chrome__find",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__list_pages",
+      "Bash(gh search *)",
+      "Bash(npm view *)",
+      "mcp__claude-in-chrome__get_page_text",
+      "Bash(pnpm lint:unused *)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot",
+      "Bash(claude mcp list *)"
+    ],
     "defaultMode": "auto"
   },
-  "model": "opusplan",
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "bunx -y ccstatusline@latest",
@@ -19,7 +30,8 @@
     "claude-code-setup@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": false,
-    "claude-md-management@claude-plugins-official": true
+    "claude-md-management@claude-plugins-official": true,
+    "chrome-devtools-mcp@chrome-devtools-plugins": false
   },
   "extraKnownMarketplaces": {
     "chrome-devtools-plugins": {
@@ -40,6 +52,36 @@
       "豆大福でも食べながらまったりお待ちください"
     ]
   },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/dotfiles/.claude/hooks/git-sync-sessionstart.sh",
+            "timeout": 20,
+            "statusMessage": "リモート同期状態を確認中..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/dotfiles/.claude/hooks/git-sync-stop.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "effortLevel": "high",
   "autoDreamEnabled": true,
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }
