@@ -3,7 +3,10 @@
     "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
     "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "ENABLE_TOOL_SEARCH": "true"
+    "ENABLE_TOOL_SEARCH": "true",
+    "ANTHROPIC_CUSTOM_MODEL_OPTION": "claude-opus-4-6[1M]",
+    "ANTHROPIC_CUSTOM_MODEL_OPTION_NAME": "Opus 4.6",
+    "ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION": "Opus 4.6 (pinned full model ID)"
   },
   "permissions": {
     "allow": [
@@ -19,7 +22,33 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/dotfiles/.claude/hooks/git-sync-sessionstart.sh",
+            "timeout": 20,
+            "statusMessage": "リモート同期状態を確認中..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/dotfiles/.claude/hooks/git-sync-stop.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "bunx -y ccstatusline@latest",
@@ -50,33 +79,6 @@
       "少女祈祷中...",
       "もみじ饅頭でも食べながらまったりお待ちください",
       "豆大福でも食べながらまったりお待ちください"
-    ]
-  },
-  "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "startup|resume",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/dotfiles/.claude/hooks/git-sync-sessionstart.sh",
-            "timeout": 20,
-            "statusMessage": "リモート同期状態を確認中..."
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/dotfiles/.claude/hooks/git-sync-stop.sh",
-            "timeout": 10
-          }
-        ]
-      }
     ]
   },
   "effortLevel": "high",
