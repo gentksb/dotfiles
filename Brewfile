@@ -6,6 +6,7 @@ brew "fzf"
 brew "gh"
 brew "jq"
 brew "uv"
+brew "container"
 
 # Productivity & Utilities
 cask "raycast"
@@ -15,7 +16,6 @@ cask "alt-tab"
 # Development Tools
 cask "visual-studio-code"
 cask "ghostty"
-cask "orbstack"
 cask "font-udev-gothic-nf"
 cask "google-japanese-ime"
 
