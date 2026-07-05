@@ -46,7 +46,8 @@ install_macos_packages() {
   if [ -z "${CI:-}" ]; then
     brew bundle --file="$script_dir/Brewfile"
   else
-    echo "Skipping GUI applications in CI environment"
+    echo "Skipping GUI applications and macOS 26+ packages in CI environment"
+    HOMEBREW_BUNDLE_BREW_SKIP="container" \
     HOMEBREW_BUNDLE_CASK_SKIP="$(awk '/^cask /{gsub(/"/, "", $2); printf "%s ", $2}' "$script_dir/Brewfile")" \
       brew bundle --file="$script_dir/Brewfile"
   fi
