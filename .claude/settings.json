@@ -22,7 +22,10 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "claude-fable-5[1m]",
+  "model": "claude-opus-4-6[1M]",
+  "fallbackModel": [
+    "claude-sonnet-4-6"
+  ],
   "hooks": {
     "SessionStart": [
       {
