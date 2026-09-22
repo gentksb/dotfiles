@@ -8,6 +8,7 @@
 # 出力は人間/Claude が読む構造化テキスト。終了コード:
 #   0  = 同期成功（または既に同期済み / publish 済み）
 #   3  = rebase コンフリクトで中断中（手動解決 or abort が必要）
+#   4  = upstream 無しのブランチがマージ済み PR の head と一致（publish せず停止）
 #   1  = それ以外のエラー
 set -uo pipefail
 
@@ -28,6 +29,23 @@ fi
 
 # 3. upstream 解決（無ければ publish = VSCode "Publish Branch" 相当）
 if ! upstream="$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null)"; then
+  # squash マージ済み PR のブランチはリモートで削除済みのため upstream が無く、
+  # git の祖先判定ではマージ済みと分からない。PR の head コミットと HEAD の一致で判定する。
+  if ! command -v gh >/dev/null 2>&1; then
+    say "gh が無いため、マージ済み PR の確認をスキップします。"
+  elif ! merged_pr="$(gh pr list --state merged --head "$branch" --limit 1 \
+      --json number,headRefOid --jq '.[0] | select(.) | "\(.number) \(.headRefOid)"' 2>/dev/null)"; then
+    say "gh pr list に失敗したため（未認証・GitHub 以外のリモート等）、マージ済み PR の確認をスキップします。"
+  elif [ -n "$merged_pr" ]; then
+    pr_number="${merged_pr%% *}"
+    pr_head="${merged_pr#* }"
+    if [ "$pr_head" = "$(git rev-parse HEAD)" ]; then
+      say "ブランチ '$branch' は PR #$pr_number でマージ済みです（PR の head = HEAD）。publish しません。"
+      say "SUMMARY: branch=$branch action=already-merged pr=$pr_number"
+      exit 4
+    fi
+    say "注意: '$branch' は PR #$pr_number でマージ済みですが、HEAD が PR の head と異なるため publish を続けます。"
+  fi
   say "ブランチ '$branch' に upstream がありません。origin へ publish します。"
   if git push -u origin "$branch"; then
     say "SUMMARY: branch=$branch action=published upstream=origin/$branch"

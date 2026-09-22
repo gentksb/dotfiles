@@ -30,7 +30,24 @@ rebase が中断状態のまま停止している。ゲンに次の2択を提示
 
 勝手にどちらかを実行せず、必ず確認する。
 
+## マージ済みブランチ（終了コード 4 / `action=already-merged`）
+
+upstream の無いブランチの HEAD が、マージ済み PR の head コミットと一致したため publish せずに停止している。
+squash マージ後にリモートブランチが削除された状態であり、publish するとマージ済みブランチがリモートに復活する。
+
+ゲンに PR 番号を伝え、次の片付けを実行してよいか確認する（`<default>` は PR のベースブランチ）:
+
+```
+git switch <default>
+git pull --rebase
+git branch -D <branch>
+```
+
+squash マージされたブランチは `git branch -d` では未マージと判定されるため `-D` を使う。
+リモートブランチは既に削除済みなので `git push --delete` は不要。
+
 ## 注意
 
 - `disable-model-invocation: true` のため Claude が自動起動することはない。ゲンが `/git-sync` を打ったときだけ動く。
 - グローバル git 設定には依存しない（pull.rebase 等が未設定でも rebase で動く）。
+- マージ済み判定は `gh` を使う。`gh` が無い・未認証・GitHub 以外のリモートの場合は判定をスキップして従来どおり publish する。

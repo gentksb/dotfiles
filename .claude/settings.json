@@ -3,10 +3,7 @@
     "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
     "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "ENABLE_TOOL_SEARCH": "true",
-    "ANTHROPIC_CUSTOM_MODEL_OPTION": "claude-opus-4-6[1M]",
-    "ANTHROPIC_CUSTOM_MODEL_OPTION_NAME": "Opus 4.6",
-    "ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION": "Opus 4.6 (pinned full model ID)"
+    "ENABLE_TOOL_SEARCH": "true"
   },
   "permissions": {
     "allow": [
@@ -19,13 +16,9 @@
       "Bash(pnpm lint:unused *)",
       "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot",
       "Bash(claude mcp list *)"
-    ],
-    "defaultMode": "auto"
+    ]
   },
-  "model": "claude-fable-5[1m]",
-  "fallbackModel": [
-    "claude-sonnet-4-6"
-  ],
+  "model": "opus",
   "hooks": {
     "SessionStart": [
       {
@@ -53,6 +46,7 @@
       }
     ]
   },
+  "enableWorkflows": true,
   "statusLine": {
     "type": "command",
     "command": "bunx -y ccstatusline@latest",
@@ -86,10 +80,10 @@
     ]
   },
   "effortLevel": "high",
+  "advisorModel": "opus",
   "tui": "fullscreen",
   "autoDreamEnabled": true,
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
-  "enableWorkflows": true
+  "skipAutoPermissionPrompt": true
 }
